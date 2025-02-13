@@ -9,10 +9,10 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "jane000@email.com",
-  "firstName": "Jane",
-  "lastName": "Kim",
-  "address": "대전광역시"
+  "email": "kk12345@email.com",
+  "firstName": "kane",
+  "lastName": "herry",
+  "address": "UK"
 }
 
 ###
