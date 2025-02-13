@@ -1,0 +1,30 @@
+###
+GET http://localhost:3000/users
+
+###
+GET http://localhost:3000/users/ac240971-6f59-40f5-b9ac-3f343e46e80c
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "email": "jane000@email.com",
+  "firstName": "Jane",
+  "lastName": "Kim",
+  "address": "대전광역시"
+}
+
+###
+PATCH http://localhost:3000/users/ac240971-6f59-40f5-b9ac-3f343e46e80c
+Content-Type: application/json
+
+{
+  "email": "kelly333@email.com",
+  "firstName": "kelly",
+  "lastName": "Sam",
+  "address": "광주광역시"
+}
+
+###
+DELETE http://localhost:3000/users/14624c5e-0c8d-445c-9e6a-3b9f594c2efc
