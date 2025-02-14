@@ -1,3 +1,5 @@
+// ---------------- Users ---------------- //
+
 ###
 GET http://localhost:3000/users
 
@@ -28,3 +30,40 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/users/14624c5e-0c8d-445c-9e6a-3b9f594c2efc
+
+
+
+// ---------------- Products ---------------- //
+
+###
+GET http://localhost:3000/products
+
+###
+GET http://localhost:3000/products/d7a30079-81bf-4432-81d9-bf156b234162
+
+###
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "치마",        
+  "description": "청치마",
+  "category": "FASHION",
+  "price": 3000.0,
+  "stock": 5 
+}
+
+###
+PATCH  http://localhost:3000/products/6a2c23fd-3fc1-416c-b2f5-e9d6914e06f7
+Content-Type: application/json
+
+{
+  "name": "화장품",        
+  "description": "선크림",
+  "category": "BEAUTY",
+  "price": 10000.0,
+  "stock": 6
+}
+
+###
+DELETE   http://localhost:3000/products/f5b9f2ab-9d6e-41a8-8ca4-fa999c79cfde
