@@ -10,7 +10,23 @@ const app = express();
 app.use(express.json());
 
 app.get("/users", async (req, res) => {
-  const users = await prisma.user.findMany();
+  // 쿼리 파라미터 추가
+  const { offset = 0, limit = 10, order = "newest" } = req.query; // offset과 limit를 활용하여  pagenation이 가능, newest: 생성일 기준으로 내림차순 // query에는 문자열
+  let orderBy;
+  switch (order) {
+    case "oldest":
+      orderBy = { createdAt: "asc" };
+      break;
+    case "newest":
+      orderBy = { createdAt: "desc" };
+    default:
+      orderBy = { createdAt: "desc" };
+  }
+  const users = await prisma.user.findMany({
+    orderBy: orderBy,
+    skip: parseInt(offset),
+    take: parseInt(limit),
+  });
   res.send(users);
 });
 
@@ -47,7 +63,32 @@ app.delete("/users/:id", async (req, res) => {
 
 // products
 app.get("/products", async (req, res) => {
-  const products = await prisma.product.findMany();
+  const { offset = 0, limit = 10, order = "newest", category } = req.query;
+  let orderBy;
+  switch (order) {
+    case "priceLowest":
+      orderBy = { price: "asc" };
+      break;
+    case "priceHighest":
+      orderBy = { price: "desc" };
+      break;
+    case "oldest":
+      orderBy = { createdAt: "asc" };
+      break;
+    case "newest":
+      orderBy = { createdAt: "desc" };
+    default:
+      orderBy = { createdAt: "desc" };
+  }
+
+  const where = category ? { category } : {}; // 필터조건이 없을 땐 {}
+
+  const products = await prisma.product.findMany({
+    where,
+    orderBy,
+    skip: parseInt(offset),
+    take: parseInt(limit),
+  });
   res.send(products);
 });
 

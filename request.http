@@ -4,6 +4,8 @@
 GET http://localhost:3000/users
 
 ###
+GET http://localhost:3000/users?offset=0&limit=2&order=newest
+###
 GET http://localhost:3000/users/ac240971-6f59-40f5-b9ac-3f343e46e80c
 
 ###
@@ -37,6 +39,9 @@ DELETE http://localhost:3000/users/14624c5e-0c8d-445c-9e6a-3b9f594c2efc
 
 ###
 GET http://localhost:3000/products
+
+###
+GET http://localhost:3000/products?order=priceHighest&category=BEAUTY
 
 ###
 GET http://localhost:3000/products/d7a30079-81bf-4432-81d9-bf156b234162
