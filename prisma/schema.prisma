@@ -19,7 +19,6 @@ model User {
   firstName String
   lastName  String
   address   String
-  age       Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
