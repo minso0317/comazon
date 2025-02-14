@@ -45,6 +45,42 @@ app.delete("/users/:id", async (req, res) => {
   res.send("Success delete");
 });
 
+// products
+app.get("/products", async (req, res) => {
+  const products = await prisma.product.findMany();
+  res.send(products);
+});
+
+app.get("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await prisma.product.findUnique({
+    where: { id },
+  });
+  res.send(product);
+});
+
+app.post("/products", async (req, res) => {
+  const product = await prisma.product.create({ data: req.body });
+  res.status(201).send(product);
+});
+
+app.patch("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await prisma.product.update({
+    where: { id },
+    data: req.body,
+  });
+  res.send(product);
+});
+
+app.delete("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await prisma.product.delete({
+    where: { id },
+  });
+  res.sendStatus(204);
+});
+
 app.listen(process.env.PORT || 3000, () =>
   console.log(`Server started on ${process.env.PORT}`)
 ); // process.env로 포트를 띄우거나 혹시 없으면 PORT 3000 으로 띄워라
