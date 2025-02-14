@@ -2,7 +2,12 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { assert } from "superstruct";
 import * as dotenv from "dotenv";
-import { CreateUser, PatchUser } from "./structs.js";
+import {
+  CreateProduct,
+  CreateUser,
+  PatchProduct,
+  PatchUser,
+} from "./structs.js";
 
 dotenv.config();
 
@@ -105,12 +110,14 @@ app.get("/products/:id", async (req, res) => {
 });
 
 app.post("/products", async (req, res) => {
+  assert(req.body, CreateProduct);
   const product = await prisma.product.create({ data: req.body });
   res.status(201).send(product);
 });
 
 app.patch("/products/:id", async (req, res) => {
   const { id } = req.params;
+  assert(req.body, PatchProduct);
   const product = await prisma.product.update({
     where: { id },
     data: req.body,

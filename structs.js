@@ -9,3 +9,21 @@ export const CreateUser = s.object({
 });
 
 export const PatchUser = s.partial(CreateUser);
+
+export const CreateProduct = s.object({
+  name: s.size(s.string(), 1, 60),
+  description: s.string(),
+  category: s.enums([
+    "FASHION",
+    "BEAUTY",
+    "SPORTS",
+    "ELECTRONICS",
+    "HOME_INTERIOR",
+    "HOUSEHOLD_SUPPLIES",
+    "KITCHENWARE",
+  ]),
+  price: s.size(s.number(), 0, Infinity),
+  stock: s.size(s.integer(), 0, Infinity),
+});
+
+export const PatchProduct = s.partial(CreateProduct);

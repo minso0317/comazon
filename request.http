@@ -51,11 +51,11 @@ POST http://localhost:3000/products
 Content-Type: application/json
 
 {
-  "name": "치마",        
-  "description": "청치마",
+  "name": "긴치마",        
+  "description": "연청치마",
   "category": "FASHION",
-  "price": 3000.0,
-  "stock": 5 
+  "price": 3500,
+  "stock": 3 
 }
 
 ###
