@@ -10,20 +10,22 @@ export const CreateUser = s.object({
 
 export const PatchUser = s.partial(CreateUser);
 
+const category = [
+  "FASHION",
+  "BEAUTY",
+  "SPORTS",
+  "ELECTRONICS",
+  "HOME_INTERIOR",
+  "HOUSEHOLD_SUPPLIES",
+  "KITCHENWARE",
+];
+
 export const CreateProduct = s.object({
   name: s.size(s.string(), 1, 60),
   description: s.string(),
-  category: s.enums([
-    "FASHION",
-    "BEAUTY",
-    "SPORTS",
-    "ELECTRONICS",
-    "HOME_INTERIOR",
-    "HOUSEHOLD_SUPPLIES",
-    "KITCHENWARE",
-  ]),
-  price: s.size(s.number(), 0, Infinity),
-  stock: s.size(s.integer(), 0, Infinity),
+  category: s.enums(category),
+  price: s.min(s.number(), 0),
+  stock: s.min(s.integer(), 0),
 });
 
 export const PatchProduct = s.partial(CreateProduct);

@@ -51,7 +51,7 @@ POST http://localhost:3000/products
 Content-Type: application/json
 
 {
-  "name": "긴치마",        
+  "name": "치마",        
   "description": "연청치마",
   "category": "FASHION",
   "price": 3500,
@@ -59,14 +59,14 @@ Content-Type: application/json
 }
 
 ###
-PATCH  http://localhost:3000/products/6a2c23fd-3fc1-416c-b2f5-e9d6914e06f7
+PATCH  http://localhost:3000/products/194c9121-370e-4351-bc53-1620cd7fcbda
 Content-Type: application/json
 
 {
   "name": "화장품",        
   "description": "선크림",
-  "category": "BEAUTY",
-  "price": 10000.0,
+  "category": "EAUTY",
+  "price": 10009,
   "stock": 6
 }
 
