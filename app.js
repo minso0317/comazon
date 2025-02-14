@@ -1,6 +1,8 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import { assert } from "superstruct";
 import * as dotenv from "dotenv";
+import { CreateUser, PatchUser } from "./structs.js";
 
 dotenv.config();
 
@@ -40,12 +42,14 @@ app.get("/users/:id", async (req, res) => {
 });
 
 app.post("/users", async (req, res) => {
+  assert(req.body, CreateUser);
   const user = await prisma.user.create({ data: req.body });
   res.status(201).send(user);
 });
 
 app.patch("/users/:id", async (req, res) => {
   const { id } = req.params;
+  assert(req.body, PatchUser);
   const user = await prisma.user.update({
     where: { id },
     data: req.body,

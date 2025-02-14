@@ -13,19 +13,19 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "kk12345@email.com",
-  "firstName": "kane",
+  "email": "bbbbda@email.com",
+  "firstName": "asdas",
   "lastName": "herry",
   "address": "UK"
 }
 
 ###
-PATCH http://localhost:3000/users/ac240971-6f59-40f5-b9ac-3f343e46e80c
+PATCH http://localhost:3000/users/5904c7e9-507f-4b03-9d13-f6b7c980044f
 Content-Type: application/json
 
 {
-  "email": "kelly333@email.com",
-  "firstName": "kelly",
+  "email": "kellyf@113455email.com",
+  "firstName": "nameisname",
   "lastName": "Sam",
   "address": "광주광역시"
 }
