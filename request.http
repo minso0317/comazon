@@ -65,7 +65,7 @@ Content-Type: application/json
 {
   "name": "화장품",        
   "description": "선크림",
-  "category": "EAUTY",
+  "category": "BEAUTY",
   "price": 10009,
   "stock": 6
 }

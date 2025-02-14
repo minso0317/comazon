@@ -16,6 +16,22 @@ const prisma = new PrismaClient();
 const app = express();
 app.use(express.json());
 
+function asyncHandler(handler) {
+  return async function (req, res) {
+    try {
+      await handler(req, res);
+    } catch (e) {
+      console.log("Error occured");
+      console.log(e.name);
+      if (e.name === "StructError") {
+        res.status(400).send({ message: e.message });
+      } else {
+        res.status(500).send({ message: e.message });
+      }
+    }
+  };
+}
+
 app.get("/users", async (req, res) => {
   // 쿼리 파라미터 추가
   const { offset = 0, limit = 10, order = "newest" } = req.query; // offset과 limit를 활용하여  pagenation이 가능, newest: 생성일 기준으로 내림차순 // query에는 문자열
