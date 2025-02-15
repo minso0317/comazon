@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { assert } from "superstruct";
 import * as dotenv from "dotenv";
 import {
@@ -22,8 +22,18 @@ function asyncHandler(handler) {
       await handler(req, res);
     } catch (e) {
       console.log("Error occured");
-      console.log(e.name);
-      if (e.name === "StructError") {
+      console.log(e);
+      if (
+        e.name === "StructError" ||
+        (e instanceof Prisma.PrismaClientKnownRequestError &&
+          e.code === "P2002") ||
+        e instanceof Prisma.PrismaClientValidationError
+      ) {
+        res.status(400).send({ message: e.message });
+      } else if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === "P2025"
+      ) {
         res.status(400).send({ message: e.message });
       } else {
         res.status(500).send({ message: e.message });
