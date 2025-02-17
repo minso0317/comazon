@@ -21,7 +21,7 @@ model User {
   address   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Order     Order[]
+  orders    Order[]
 }
 
 model Product {
