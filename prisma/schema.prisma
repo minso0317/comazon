@@ -14,15 +14,16 @@ datasource db {
 }
 
 model User {
-  id             String           @id @default(uuid())
-  email          String           @unique
+  id             String          @id @default(uuid())
+  email          String          @unique
   firstName      String
   lastName       String
   address        String
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   orders         Order[]
-  UserPreference UserPreference[]
+  UserPreference UserPreference?
+  savedProducts  Product[]
 }
 
 model Product {
@@ -35,6 +36,7 @@ model Product {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   orderItems  OrderItem[]
+  savedUsers  User[]
 }
 
 model UserPreference {
