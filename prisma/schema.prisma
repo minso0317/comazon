@@ -43,7 +43,7 @@ model UserPreference {
   id           String   @id @default(uuid())
   receiveEmail Boolean
   createdAt    DateTime @default(now())
-  updataedAt   DateTime @updatedAt
+  updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade) // User가 삭제되면 UserPreference도 삭제가 됨 .
   userId       String   @unique
 }
@@ -53,7 +53,7 @@ model Order {
   id         String      @id @default(uuid())
   status     OrderStatus @default(PENDING)
   createdAt  DateTime    @default(now())
-  updataedAt DateTime    @updatedAt
+  updatedAt  DateTime    @updatedAt
   user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull) // onDelete: SetNull가 삭제되면 User를 가르키는 Order의 userId는 Null이 됨.
   userId     String?
   orderItems OrderItem[]
@@ -62,15 +62,15 @@ model Order {
 // Order가 삭제되면 Order를 구성하는 OrderItem도 모두 삭제
 // Product가 삭제되면 해당 Product를 가리키는 OrderItem의 productId는 Null이 되도록 해주세요.
 model OrderItem {
-  id         String   @id @default(uuid())
-  unitPrice  Float
-  quantity   Int
-  createdAt  DateTime @default(now())
-  updataedAt DateTime @updatedAt
-  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId    String
-  product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
-  productId  String?
+  id        String   @id @default(uuid())
+  unitPrice Float
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId String?
 }
 
 enum OrderStatus {
