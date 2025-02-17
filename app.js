@@ -1,8 +1,9 @@
 import express from "express";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { assert } from "superstruct";
+import { assert, create } from "superstruct";
 import * as dotenv from "dotenv";
 import {
+  CreateOrder,
   CreateProduct,
   CreateUser,
   PatchProduct,
@@ -112,9 +113,19 @@ app.patch(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     assert(req.body, PatchUser);
+
+    const { userPreference, ...userFields } = req.body;
     const user = await prisma.user.update({
       where: { id },
-      data: req.body,
+      data: {
+        ...userFields,
+        userPreference: {
+          update: userPreference,
+        },
+      },
+      include: {
+        userPreference: true,
+      },
     });
     res.send(user);
   })
@@ -270,6 +281,26 @@ app.get(
     /* =============== */
     order.total = total;
     res.send(order);
+  })
+);
+
+app.post(
+  "/orders",
+  asyncHandler(async (req, res) => {
+    assert(req.body, CreateOrder);
+    const { userId, orderItems } = req.body;
+    const order = await prisma.order.create({
+      data: {
+        userId,
+        orderItems: {
+          create: orderItems,
+        },
+      },
+      include: {
+        orderItems: true,
+      },
+    });
+    res.status(201).send(order);
   })
 );
 

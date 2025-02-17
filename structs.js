@@ -1,5 +1,6 @@
 import * as s from "superstruct";
 import isEmail from "is-email";
+import isUuid from "is-uuid";
 
 export const CreateUser = s.object({
   email: s.define("Email", isEmail),
@@ -32,3 +33,20 @@ export const CreateProduct = s.object({
 });
 
 export const PatchProduct = s.partial(CreateProduct);
+
+const Uuid = s.define("Uuid", (value) => isUuid.v4(value));
+// CreateOrder 스트럭트 정의
+export const CreateOrder = s.object({
+  userId: Uuid,
+  orderItems: s.size(
+    s.array(
+      s.object({
+        productId: Uuid,
+        unitPrice: s.min(s.number(), 0),
+        quantity: s.min(s.integer(), 1), // orderItems은 적어도 1개 이상 order를 했을꺼라 생각된다.
+      })
+    ),
+    1,
+    Infinity
+  ),
+});
