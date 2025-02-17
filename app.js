@@ -236,6 +236,26 @@ app.get(
         orderItems: true,
       },
     });
+
+    // 1번 방식
+    let total = 0;
+    order.orderItems.forEach(({ unitPrice, quantity }) => {
+      total += unitPrice * quantity;
+    });
+
+    //2번 방식
+    // let total = 0;
+    // order.orderItems.forEach((item) => {
+    //   total += item.unitPrice * item.quantity;
+    // });
+
+    // 3번 방식
+    // const total = order.orderItems.reduce((acc, { unitPrice, quantity }) => {
+    //   return acc + unitPrice * quantity;
+    // }, 0);
+
+    /* =============== */
+    order.total = total;
     res.send(order);
   })
 );
