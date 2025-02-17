@@ -61,6 +61,13 @@ app.get(
       orderBy: orderBy,
       skip: parseInt(offset),
       take: parseInt(limit),
+      include: {
+        userPreference: {
+          select: {
+            receiveEmail: true,
+          },
+        },
+      },
     });
     res.send(users);
   })
@@ -70,7 +77,7 @@ app.get(
   "/users/:id",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findUniqueOrThrow({
       // where: { id: req.params.id }, // uuid를 사용하기 때문에 숫자열 형변환 없이 문자열로 사용한다.
       where: { id },
     });
@@ -108,6 +115,35 @@ app.delete(
       where: { id },
     });
     res.send("Success delete");
+  })
+);
+
+app.get(
+  "/users/:id/saved-products",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { savedProducts } = await prisma.user.findUniqueOrThrow({
+      where: { id },
+      include: {
+        savedProducts: true,
+      },
+    });
+    res.send(savedProducts);
+  })
+);
+
+// 특정 유저의 Order를 모두 조회할 수 있는 GET /users/:id/orders 유저 정보는 조회할 필요 없고, 유저의 Order만 모두 조회
+app.get(
+  "/users/:id/orders",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { orders } = await prisma.user.findFirstOrThrow({
+      where: { id },
+      include: {
+        orders: true,
+      },
+    });
+    res.send(orders);
   })
 );
 
@@ -186,6 +222,21 @@ app.delete(
       where: { id },
     });
     res.sendStatus(204);
+  })
+);
+
+// orders/:id에서 Order와 관련된 OrderItem도 모두 조회
+app.get(
+  "/orders/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const order = await prisma.order.findFirstOrThrow({
+      where: { id },
+      include: {
+        orderItems: true,
+      },
+    });
+    res.send(order);
   })
 );
 
