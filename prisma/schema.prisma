@@ -14,15 +14,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  firstName String
-  lastName  String
-  address   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orders    Order[]
-  // UserProduct UserProduct[]
+  id             String           @id @default(uuid())
+  email          String           @unique
+  firstName      String
+  lastName       String
+  address        String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  orders         Order[]
+  UserPreference UserPreference[]
 }
 
 model Product {
@@ -34,8 +34,7 @@ model Product {
   stock       Int
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  OrderItem   OrderItem[]
-  // UserProduct UserProduct[]
+  orderItems  OrderItem[]
 }
 
 model UserPreference {
@@ -43,6 +42,8 @@ model UserPreference {
   receiveEmail Boolean
   createdAt    DateTime @default(now())
   updataedAt   DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   @unique
 }
 
 // Order, OrderItem, Product 모델 간의 관계를 정의!
@@ -53,7 +54,7 @@ model Order {
   updataedAt DateTime    @updatedAt
   user       User        @relation(fields: [userId], references: [id])
   userId     String
-  OrderItem  OrderItem[]
+  orderItems OrderItem[]
 }
 
 model OrderItem {
@@ -67,15 +68,6 @@ model OrderItem {
   product    Product  @relation(fields: [productId], references: [id])
   productId  String
 }
-
-// model UserProduct {
-//   id        String   @id @default(uuid())
-//   createdAt DateTime @default(now())
-//   user      User     @relation(fields: [userId], references: [id])
-//   userId    String
-//   product   Product  @relation(fields: [productId], references: [id])
-//   productId String
-// }
 
 enum OrderStatus {
   PENDING
