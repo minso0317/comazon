@@ -21,6 +21,7 @@ model User {
   address   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Order     Order[]
 }
 
 model Product {
@@ -34,6 +35,30 @@ model Product {
   updatedAt   DateTime @updatedAt
 }
 
+model UserPreference {
+  id           String   @id @default(uuid())
+  receiveEmail Boolean
+  createdAt    DateTime @default(now())
+  updataedAt   DateTime @updatedAt
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  status     OrderStatus @default(PENDING)
+  createdAt  DateTime    @default(now())
+  updataedAt DateTime    @updatedAt
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  unitPrice  Float
+  quantity   Int
+  createdAt  DateTime @default(now())
+  updataedAt DateTime @updatedAt
+}
+
 enum Category {
   FASHION
   BEAUTY
@@ -42,4 +67,9 @@ enum Category {
   HOME_INTERIOR
   HOUSEHOLD_SUPPLIES
   KITCHENWARE
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETE
 }
