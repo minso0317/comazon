@@ -87,11 +87,24 @@ app.get(
 
 app.post(
   "/users",
-  asyncHandler(async (req, res) => {
-    assert(req.body, CreateUser);
-    const user = await prisma.user.create({ data: req.body });
-    res.status(201).send(user);
-  })
+  asyncHandler(
+    asyncHandler(async (req, res) => {
+      assert(req.body, CreateUser);
+      const { userPreference, ...userFields } = req.body;
+      const user = await prisma.user.create({
+        data: {
+          ...userFields,
+          userPreference: {
+            create: userPreference,
+          },
+        },
+        include: {
+          userPreference: true,
+        },
+      });
+      res.status(201).send(user);
+    })
+  )
 );
 
 app.patch(
