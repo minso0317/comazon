@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { assert, create } from "superstruct";
 import * as dotenv from "dotenv";
@@ -16,6 +17,7 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 function asyncHandler(handler) {
@@ -371,20 +373,38 @@ app.post(
         },
       });
     });
-    await Promise.all(queries);
+    // await Promise.all(queries);
 
-    const order = await prisma.order.create({
-      data: {
-        userId,
-        orderItems: {
-          create: orderItems,
+    const [order] = await prisma.$transaction([
+      prisma.order.create({
+        data: {
+          user: {
+            connect: { id: userId },
+          },
+          orderItems: {
+            create: orderItems,
+          },
         },
-      },
-      include: {
-        orderItems: true,
-      },
-    });
+        include: {
+          orderItems: true,
+        },
+      }),
+      ...queries,
+    ]);
     res.status(201).send(order);
+
+    // const order = await prisma.order.create({
+    //   data: {
+    //     userId,
+    //     orderItems: {
+    //       create: orderItems,
+    //     },
+    //   },
+    //   include: {
+    //     orderItems: true,
+    //   },
+    // });
+    // res.status(201).send(order);
   })
 );
 
