@@ -326,6 +326,53 @@ app.post(
   asyncHandler(async (req, res) => {
     assert(req.body, CreateOrder);
     const { userId, orderItems } = req.body;
+
+    // 1. get products
+    const productIds = orderItems.map((orderItem) => orderItem.productId);
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+    });
+    function getQuantity(productId) {
+      const { quantity } = orderItems.find(
+        (orderItem) => orderItem.productId === productId
+      );
+      return quantity;
+    }
+
+    // 2. 재고와 주문량 비교
+    const isSuffcientStock = products.every((product) => {
+      const { id, stock } = product;
+      return stock >= getQuantity(id);
+    });
+
+    // 3. error or create order
+    if (!isSuffcientStock) {
+      throw new Error("Insufficient Stock");
+    }
+
+    // Quiz: 실제 상품의 재고량을 감소시키는 로직 추가
+    // for (const productId of productIds) {
+    //   await prisma.product.update({
+    //     where: { id: productId },
+    //     data: {
+    //       stock: {
+    //         decrement: getQuantity(productId),
+    //       },
+    //     },
+    //   });
+    // }
+    const queries = productIds.map((productId) => {
+      return prisma.product.update({
+        where: { id: productId },
+        data: {
+          stock: {
+            decrement: getQuantity(productId),
+          },
+        },
+      });
+    });
+    await Promise.all(queries);
+
     const order = await prisma.order.create({
       data: {
         userId,
