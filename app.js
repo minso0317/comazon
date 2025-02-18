@@ -6,6 +6,7 @@ import {
   CreateOrder,
   CreateProduct,
   CreateUser,
+  CreateSavedProduct,
   PatchProduct,
   PatchUser,
 } from "./structs.js";
@@ -153,6 +154,42 @@ app.get(
       },
     });
     res.send(savedProducts);
+  })
+);
+
+// 찜하기
+app.post(
+  "/users/:id/saved-products",
+  asyncHandler(async (req, res) => {
+    assert(req.body, CreateSavedProduct);
+    const { id: userId } = req.params;
+    const { productId } = req.body;
+    // 판단 로직
+    const savedCount = await prisma.user.count({
+      where: {
+        id: userId,
+        savedProducts: {
+          some: { id: productId },
+        },
+      },
+    });
+
+    // // connect, disconnet
+    const condition =
+      savedCount > 0
+        ? { disconnect: { id: productId } }
+        : { connect: { id: productId } };
+
+    const { savedProducts } = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        savedProducts: condition,
+      },
+      include: {
+        savedProducts: true,
+      },
+    });
+    res.status(201).send(savedProducts);
   })
 );
 

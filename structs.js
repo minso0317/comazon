@@ -50,3 +50,7 @@ export const CreateOrder = s.object({
     Infinity
   ),
 });
+
+export const CreateSavedProduct = s.object({
+  productId: Uuid,
+});
