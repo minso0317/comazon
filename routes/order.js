@@ -1,8 +1,10 @@
 import express from "express";
 import asyncHandler from "../src/async-handler.js";
+import { PrismaClient } from "@prisma/client";
 import { assert } from "superstruct";
 import { CreateOrder } from "../src/structs.js";
 
+const prisma = new PrismaClient();
 const orderRouter = express.Router();
 
 orderRouter.route("/").post(

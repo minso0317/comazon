@@ -11,7 +11,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon src/app.js",
     "start": "node app.js"
   },
   "prisma": {
